@@ -1,7 +1,7 @@
 package academy.devdojo.springboot2.controller;
 
 import academy.devdojo.springboot2.domain.Anime;
-import academy.devdojo.springboot2.repository.AnimeService;
+import academy.devdojo.springboot2.service.AnimeService;
 import academy.devdojo.springboot2.util.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
