@@ -2,7 +2,7 @@ package academy.devdojo.springboot2.controller;
 
 import academy.devdojo.springboot2.domain.Anime;
 import academy.devdojo.springboot2.repository.AnimeRepository;
-import academy.devdojo.springboot2.util.DateUtil;
+import academy.devdojo.springboot2.util.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,25 +19,18 @@ import java.util.List;
 @RequiredArgsConstructor//gera um constructor com todos os atributos do tipo final
 public class AnimeController {
 
-    private final DateUtil dateUtil;
+    private final Utils utils;
     private final AnimeRepository animeRepository;
 
     @GetMapping
     public ResponseEntity<List<Anime>> listAll() {
-        log.info("Date Formatted {}", dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+        log.info("Date Formatted {}", utils.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(animeRepository.listAll());
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Anime> findById(@PathVariable int id) {
-
-        Anime animeFound = animeRepository.listAll()
-                .stream()
-                .filter(anime -> anime.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime Not Found"));
-
-        return ResponseEntity.ok(animeFound);
+        return ResponseEntity.ok(animeRepository.findById(id));
     }
 
     @PostMapping
@@ -48,6 +41,12 @@ public class AnimeController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         animeRepository.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> update(@RequestBody Anime anime) {
+        animeRepository.update(anime);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
