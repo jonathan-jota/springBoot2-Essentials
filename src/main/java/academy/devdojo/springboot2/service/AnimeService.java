@@ -15,12 +15,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AnimeService {
 
     private final Utils utils;
-    private static List<Anime> animes;
     private final AnimeRepository animeRepository;
 
     public List<Anime> listAll() {
         return animeRepository.findAll();
     }
+
+    public List<Anime> findByName(String name) { return animeRepository.findByName(name);}
 
     public Anime findById(int id) {
         return utils.findAnimeOrThrowNotFound(id, animeRepository);
